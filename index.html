@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alquerque</title>
+  <link rel="stylesheet" href="./game.css">
+</head>
+
+<body align="center">
+  <h2 align="center" style="margin-bottom:1px">Alquerque</h2>
+  <canvas id="celebrationCanvas"></canvas>
+  <div class="seperator">
+    <div><img src="./border.svg" alt="Border"></div>
+  </div>
+  <div id="gameOptionsModal" class="options-screen">
+    <div class="options-screen-content">
+      <div class="options-screen-body">
+        <h2 style="margin-top:1px">Game Options</h2>
+        <div class="player-options">
+          <label class="player-option">
+            <input type="radio" name="playerMode" value="single">
+            <span class="knight-icon single-player-icon">
+              <img src="./white-knight.svg" alt="White Knight">
+            </span>
+            Single Player
+          </label>
+          <label class="player-option">
+            <input type="radio" name="playerMode" value="multi" checked>
+            <span class="knight-icon multi-player-icon">
+              <img src="./black-knight.svg" alt="Black Knight">
+              <img src="./white-knight.svg" alt="White Knight">
+            </span>
+            Multi Player
+          </label>
+        </div>
+        <div class="piece-options">
+          <label class="piece-option">
+            <input type="radio" name="playerColor" value="black">
+            <span class="knight-icon black-piece-icon">
+              <img src="./blackpiece.png" alt="Black Knight">
+            </span>
+            Black Piece
+          </label>
+          <label class="piece-option">
+            <input type="radio" name="playerColor" value="white" checked>
+            <span class="knight-icon white-piece-icon">
+              <img src="./whitepiece.png" alt="White Knight">
+            </span>
+            White Piece
+          </label>
+        </div>
+        <label hidden>
+          <input type="checkbox" id="miniChallenges"> Enable Mini Challenges
+        </label>
+        <br />
+        <div class="startGameBtn">
+          <img src="battle.svg" alt="Battle" class="battle">
+          <div>Start Game</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="board-container" hidden align="center">
+    <svg class="board-design">
+      <!--<rect x="36" y="36" width="216" height="216" stroke="black" fill="transparent"/>-->
+    </svg>
+    <table id="table">
+    </table>
+  </div>
+  <script src="./game.js"></script>
+</body>
+
+</html>

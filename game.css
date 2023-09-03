@@ -1,0 +1,260 @@
+:root {
+  --piece-size-mobile: 30px;
+  --piece-size-desktop: 40px;
+  --height-mobile: 65px;
+  --height-desktop: 80px;
+  --width-mobile: 65px;
+  --width-desktop: 80px;
+}
+
+/* Media query for mobile devices */
+@media screen and (max-width: 767px) {
+  :root {
+    --piece-size: var(--piece-size-mobile);
+    --height: var(--height-mobile);
+    --width: var(--width-mobile);
+  }
+}
+
+/* Media query for desktop devices */
+@media screen and (min-width: 768px) {
+  :root {
+    --piece-size: var(--piece-size-desktop);
+    --height: var(--height-desktop);
+    --width: var(--width-desktop);
+  }
+}
+
+
+@media screen and (min-width: 768px) {
+  .game-board {
+      max-width: 600px; /* Increase the maximum width for desktop */
+  }
+}
+
+@font-face {
+  font-family: "Berry Rotunda";
+  src: url('./font/Berry\ Rotunda.ttf');
+}
+
+body {
+  background-image: url("./back3.jpg");
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center center;
+  font-family: "Berry Rotunda";
+  position: relative;
+  margin: 0px;
+}
+
+.player-options {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.player-options, .piece-options{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.player-option, .piece-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.player-option input[type="radio"], .piece-option input[type="radio"]{
+  display: none;
+  /* Hide the radio buttons */
+}
+
+.player-option span, .piece-option span {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 20px;
+  border: 2px solid transparent;
+  padding: 25px;
+}
+
+.player-option span img, .piece-option span img {
+  width: 70px;
+  height: 70px;
+}
+
+.piece-option:nth-child(1) span img {
+  background-color: white;
+}
+
+.piece-option:nth-child(2) span img {
+  background-color: black;
+}
+
+.piece-option span img {
+  opacity: 0.8;
+  border-radius: 50%;
+}
+
+.piece-option {
+  margin: 0px 20px;
+}
+
+.player-option:nth-child(2) span {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  align-items: center;
+}
+
+.player-option:nth-child(2) span img {
+  position: absolute;
+  top: 18%;
+  left: 2%;
+  right: 0;
+}
+
+.player-option span img:nth-child(2) {
+  position: absolute;
+  top: 18%;
+  left: 40%;
+  right: 0;
+}
+
+.player-option input[type="radio"]:checked+span, .piece-option input[type="radio"]:checked+span  {
+  background-image: url("./border-selection.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.battle {
+  height: 70px;
+  width: 70px;
+}
+
+table {
+  border: 0px solid red;
+  z-index: 1;
+}
+
+td {
+  background-color: transparent;
+}
+
+table#table {
+  border-collapse: collapse;
+  /* border-spacing: 20px;
+*border-collapse: expression('separate', cellSpacing='20px');*/
+}
+
+.board-container {
+  position: relative;
+  z-index: 10;
+}
+
+.board-design {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -4;
+}
+
+.black-piece {
+  /* display: inline-block; */
+  width: var(--piece-size);
+  height: var(--piece-size);
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+
+  background-image: url("./blackpiece.png");
+  background-color: white;
+  background-size: contain;
+}
+
+.white-piece {
+  /* display: inline-block; */
+  width: var(--piece-size);
+  height: var(--piece-size);
+  border: 1px solid black;
+  border-radius: 50%;
+  text-align: center;
+
+  background-image: url("./whitepiece.png");
+  background-color: black;
+  background-size: contain;
+}
+
+.lg-piece {
+  /* display: inline-block; */
+  width: var(--piece-size);
+  height: var(--piece-size);
+  background-color: green;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.green-border {
+  outline: 3px solid green;
+}
+
+.yellow-border {
+  outline: 3px solid yellow;
+}
+
+.cell{
+  height: var(--height);
+  width: var(--width);
+  font-weight: bold;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styles for modal and overlay */
+/* .modal {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 85%;
+  background-color: transparent ;
+  z-index: 1;
+  overflow: hidden;
+} */
+
+.bar {
+  width: 100px;
+  height: 5px;
+  background-color: #333;
+  margin: 10px auto;
+  border-radius: 20px;
+}
+
+/* .modal-content {
+  background-color: #f4f4f4;
+  height: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  overflow-y: auto;
+} */
+
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -20;
+  width: 100vw;
+  height: 94vh;
+}
