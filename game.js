@@ -3,6 +3,9 @@ window.onload = function () {
   const boardContainer = document.querySelector(".board-container");
   const startGameBtn = document.querySelector('.startGameBtn');
   const boardDesign = document.querySelector(".board-design");
+  const gameWon = new Audio("./audio/gamewon.mp3");
+  const killAudio = new Audio("./audio/kill.mp3");
+  const move = new Audio("./audio/move.mp3");
   let gs = {
     yhp: [], // yellow highlight pieces
     nbp: 12, // number of black pieces
@@ -173,6 +176,7 @@ window.onload = function () {
         pp.updatep("e");
         const dfx = this.i - pp.i, dfy = this.j - pp.j;//diff x & y
         if (Math.abs(dfx) == 2 || Math.abs(dfy) == 2) {
+          killAudio.play();
           let x = pp.i + (dfx / 2), y = pp.j + (dfy / 2);
           td[x][y].updatep("e");
           if (pt == "w") {
@@ -184,6 +188,9 @@ window.onload = function () {
           kill = true;
           //this.addClass("green-border");
           //this.y=true;
+        }
+        if (!kill){
+          move.play();
         }
         pp.hp(pp.getn("lg"), "e");
         let ct = true; // change turn
@@ -298,9 +305,11 @@ window.onload = function () {
     let onmp = [];  // only neighbor movable pieces
     //c("gs", Object.values(gs))
     if (gs.nwp == 0) {
+      gameWon.play();
       celebrate("Black");
       boardContainer.hidden = true;
     } else if (gs.nbp == 0) {
+      gameWon.play();
       celebrate("White");
       boardContainer.hidden = true;
     }
@@ -506,7 +515,7 @@ window.onload = function () {
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const particleCount = 90; // Number of particles
+    const particleCount = 70; // Number of particles
 
     function createParticle() {
       const angle = Math.random() * Math.PI * 2; // Random angle
@@ -564,7 +573,7 @@ window.onload = function () {
         ctx.globalAlpha = particle.alpha;
 
         // Draw medieval shapes using the Image objects
-        const imageSize = 40; // Size of the image
+        const imageSize = 30; // Size of the image
         ctx.drawImage(particle.shapeImage, particle.x - imageSize / 2, particle.y - imageSize / 2, imageSize, imageSize);
         // switch (particle.shape) {
         //     case 'sword':
@@ -583,7 +592,7 @@ window.onload = function () {
         // Move particles away from the center
         const dx = particle.x - centerX;
         const dy = particle.y - centerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        //const distance = Math.sqrt(dx * dx + dy * dy);
         const angle = Math.atan2(dy, dx);
         const speed = 4; // Adjust the speed as needed
         particle.x += Math.cos(angle) * speed;
@@ -600,9 +609,9 @@ window.onload = function () {
       });
 
       // Display which player won at the center
-      ctx.font = '25px Berry Rotunda';
+      ctx.font = '23px Berry Rotunda';
       ctx.fillStyle = 'black';
-      ctx.fillText(`Player ${winningPlayer} Triumphs!`, centerX - 180, centerY);
+      ctx.fillText(`Player ${winningPlayer} Triumphs!`, centerX - 165, centerY);
 
       requestAnimationFrame(animateParticles);
     }

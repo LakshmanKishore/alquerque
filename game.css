@@ -38,13 +38,18 @@
 }
 
 body {
-  background-image: url("./back3.jpg");
+  background-image: url("./images/background.jpg");
   background-repeat: no-repeat;
-  background-size: auto;
+  background-size: cover;
   background-position: center center;
   font-family: "Berry Rotunda";
-  position: relative;
+  position: sticky;
   margin: 0px;
+  height: 97vh;
+}
+
+.seperator img {
+  max-width: 100%;
 }
 
 .player-options {
@@ -125,7 +130,7 @@ body {
 }
 
 .player-option input[type="radio"]:checked+span, .piece-option input[type="radio"]:checked+span  {
-  background-image: url("./border-selection.svg");
+  background-image: url("./images/border-selection.svg");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -172,7 +177,7 @@ table#table {
   color: white;
   text-align: center;
 
-  background-image: url("./blackpiece.png");
+  background-image: url("./images/blackpiece.svg");
   background-color: white;
   background-size: contain;
 }
@@ -185,7 +190,7 @@ table#table {
   border-radius: 50%;
   text-align: center;
 
-  background-image: url("./whitepiece.png");
+  background-image: url("./images/whitepiece.svg");
   background-color: black;
   background-size: contain;
 }
@@ -204,7 +209,7 @@ table#table {
 }
 
 .yellow-border {
-  outline: 3px solid yellow;
+  outline: 2px solid yellow;
 }
 
 .cell{
