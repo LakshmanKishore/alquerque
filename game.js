@@ -1,11 +1,32 @@
 window.onload = function () {
+  'use strict';let zzfx,zzfxV,zzfxX
+  // ZzFXMicro - Zuper Zmall Zound Zynth - v1.2.0 by Frank Force ~ 880 bytes
+  zzfxV=0.3    // volume
+  zzfx=     // play sound
+  (p=1,k=.05,b=220,e=0,r=0,t=.1,q=0,D=1,u=0,y=0,v=0,z=0,l=0,E=0,A=0,F=0,c=0,w=1,m=
+  0,B=0,M=Math,R=44100,d=2*M.PI,G=u*=500*d/R/R,C=b*=(1-k+2*k*M.random(k=[]))*d/R,g
+  =0,H=0,a=0,n=1,I=0,J=0,f=0,x,h)=>{e=R*e+9;m*=R;r*=R;t*=R;c*=R;y*=500*d/R**3;A*=d
+  /R;v*=d/R;z*=R;l=R*l|0;for(h=e+m+r+t+c|0;a<h;k[a++]=f)++J%(100*F|0)||(f=q?1<q?2<
+  q?3<q?M.sin((g%d)**3):M.max(M.min(M.tan(g),1),-1):1-(2*g/d%2+2)%2:1-4*M.abs(M.
+  round(g/d)-g/d):M.sin(g),f=(l?1-B+B*M.sin(d*a/l):1)*(0<f?1:-1)*M.abs(f)**D*zzfxV
+  *p*(a<e?a/e:a<e+m?1-(a-e)/m*(1-w):a<e+m+r?w:a<h-c?(h-a-c)/t*w:0),f=c?f/2+(c>a?0:
+  (a<h-c?1:(h-a)/c)*k[a-c|0]/2):f),x=(b+=u+=y)*M.cos(A*H++),g+=x-x*E*(1-1E9*(M.sin
+  (a)+1)%2),n&&++n>z&&(b+=v,C+=v,n=0),!l||++I%l||(b=C,u=G,n||=1);p=zzfxX.
+  createBuffer(1,h,R);p.getChannelData(0).set(k);b=zzfxX.createBufferSource();b.
+  buffer=p;b.connect(zzfxX.destination);b.start();return b};zzfxX=new AudioContext;
+
   const optionsScreen = document.querySelector(".options-screen");
   const boardContainer = document.querySelector(".board-container");
   const startGameBtn = document.querySelector('.startGameBtn');
   const boardDesign = document.querySelector(".board-design");
+  const instructions = document.querySelector(".instructions");
+  const sound = document.querySelector(".sound");
+  const cross = document.querySelector(".cross");
+  const volbars = document.querySelector(".volbars");
+  const playerTurnPiece = document.querySelector(".player-turn");
+  const game = document.querySelector(".game");
   const gameWon = new Audio("./audio/gamewon.mp3");
-  const killAudio = new Audio("./audio/kill.mp3");
-  const move = new Audio("./audio/move.mp3");
+  cross.style.display = 'none';
   let gs = {
     yhp: [], // yellow highlight pieces
     nbp: 12, // number of black pieces
@@ -20,6 +41,15 @@ window.onload = function () {
       }
     }
   });
+
+  sound.addEventListener("click", (e) => {
+    zzfxV=zzfxV==0?0.3:0;
+    volbars.style.display = volbars.style.display==='none'? '': 'none';
+    cross.style.display = cross.style.display==='none'? '': 'none';
+    zzfx(2.08,.05,495,.01,.01,0,0,.93,-20,0,323,.08,.03,0,-279,.6,.02,1,.01,0); 
+  })
+
+  
 
   // Function to gather game settings and return them as a JSON object
   function setGameSettings() {
@@ -77,7 +107,7 @@ window.onload = function () {
 
   function Create2DArray(rows, columns) {
     var x = new Array(rows);
-    for (i = 0; i < rows; i++) {
+    for (let i = 0; i < rows; i++) {
       x[i] = new Array(columns);
     }
     return x;
@@ -176,7 +206,8 @@ window.onload = function () {
         pp.updatep("e");
         const dfx = this.i - pp.i, dfy = this.j - pp.j;//diff x & y
         if (Math.abs(dfx) == 2 || Math.abs(dfy) == 2) {
-          killAudio.play();
+          // explosion 35
+          zzfx(2.76,.05,452,.02,.28,.43,4,.71,.2,.8,0,0,.03,1.3,0,.2,.04,.33,.03,.14);
           let x = pp.i + (dfx / 2), y = pp.j + (dfy / 2);
           td[x][y].updatep("e");
           if (pt == "w") {
@@ -190,7 +221,8 @@ window.onload = function () {
           //this.y=true;
         }
         if (!kill){
-          move.play();
+          // Jump sound 119
+          zzfx(1.03,.05,476,0,.01,.06,1,1.49,-5.9,-3.2,0,0,0,0,0,0,0,.59,.01,0);
         }
         pp.hp(pp.getn("lg"), "e");
         let ct = true; // change turn
@@ -289,6 +321,13 @@ window.onload = function () {
     //c("aft",pct)
     if (ct) {
       pt = pt == "w" ? "b" : "w";
+      if(pt=="w"){
+        playerTurnPiece.classList.remove("black-piece");
+        playerTurnPiece.classList.add("white-piece");
+      } else {
+        playerTurnPiece.classList.remove("white-piece");
+        playerTurnPiece.classList.add("black-piece");
+      }
       //c("pt",pt)
     }
     if (pct == td[i][j].t && ct) {
@@ -304,13 +343,11 @@ window.onload = function () {
     let ckp = []; // can kill pieces
     let onmp = [];  // only neighbor movable pieces
     //c("gs", Object.values(gs))
-    if (gs.nwp == 0) {
+    if (gs.nwp == 0 || gs.nbp == 0) {
       gameWon.play();
-      celebrate("Black");
-      boardContainer.hidden = true;
-    } else if (gs.nbp == 0) {
-      gameWon.play();
-      celebrate("White");
+      gs.nwp==0?celebrate("Black"):celebrate("White");
+      instructions.remove();
+      game.style.width = "100%";
       boardContainer.hidden = true;
     }
     gs.yhp = []; // reset yellow highlight pieces
@@ -375,7 +412,7 @@ window.onload = function () {
     svg.innerHTML = `<rect x=${p00.x} y=${p00.y} width=${p44.y - p00.y} height=${p44.x - p00.x} stroke-width=${strokeWidth} stroke="black" fill="transparent" />`
     // for loop for generating lines li --> linesIndex which contains x1,y1,x2,y2
     const li = [[1, 0, 1, 4], [2, 0, 2, 4], [3, 0, 3, 4], [0, 1, 4, 1], [0, 2, 4, 2], [0, 3, 4, 3], [0, 2, 2, 0], [0, 2, 2, 4], [2, 0, 4, 2], [2, 4, 4, 2], [0, 0, 4, 4], [0, 4, 4, 0]]
-    for (ind in li) {
+    for (let ind in li) {
       const x1 = td[li[ind][0]][li[ind][1]].cc.x
       const y1 = td[li[ind][0]][li[ind][1]].cc.y
       const x2 = td[li[ind][2]][li[ind][3]].cc.x
@@ -624,162 +661,3 @@ window.onload = function () {
 
 
 
-
-
-
-/*
- 
- 
-//highlight possible moves
-this.highlightpm = function() {
-    //console.log("highlighting");
-    this.addClass("green-border");
-    this.removeClass("yellow-border");
-    //c(this.cmd)
-    //this.checknn();
-    c("empxy",this.empxy);
-    c("pk",this.pk)
-    if(this.pk.length>0){
-      for(let i=0;i<this.pk.length;i++){
-        td[this.pk[i][2]][this.pk[i][3]].updatep("lg");
-        }
-    } else {
-      for(let i=0;i<this.empxy.length;i++){
-        td[this.empxy[i][0]][this.empxy[i][1]].updatep("lg");
-      }
-    }
-    return;
-    
-    
-    let n = [[-1,0],[0,1],[1,0],[0,-1]]
-    if(this.cmd){
-        n = n.concat([[-1,-1],[-1,1],[1,1],[1,-1]])
-    }
-    for(let i=0;i<n.length;i++){
-        let nx = this.i+n[i][0],ny = this.j+n[i][1];
-        if(nx>4||nx<0||ny>4||ny<0) continue;
-        //c(td[nx][ny].t)
-        let opp = "b";
-        if(this.t == "b") opp = "w";
-        if(td[nx][ny].t=="e"){
-            td[nx][ny].t="lg";
-            td[nx][ny].drawp();
-        } else if(td[nx][ny].t==opp){
-            // check for neighbors neighbor for kill
-            let nn = [n[i][0]+n[i][0], n[i][1]+n[i][1]];
-            let nnx = this.i+nn[0], nny = this.j+nn[1]
-            c(nnx,nny);
-            if(nnx>4||nnx<0||nny>4||nny<0) continue;
-            if(td[nnx][nny].t=="e"){
-                td[nnx][nny].t = "lg";
-                td[nnx][nny].drawp();
-                //c(nx,ny);
-                this.pk = this.pk.concat([nx,ny]);
-                //td[nx][ny].t = "e";
-                //td[nx][ny].drawp();
-            }
-        }
-    }
-}
- 
-this.checknn = function(){
-    //this.empxy = [];
-    //this.pk = [];
-    
-    let n = this.getpn();
-    for(let i=0;i<n.length;i++){
-        let nx = this.i+n[i][0],ny = this.j+n[i][1];
-        if(nx>4||nx<0||ny>4||ny<0) continue;
-        //c(td[nx][ny].t)
-        let opp = "b";
-        if(this.t == "b") opp = "w";
-        if(td[nx][ny].t=="e" || td[nx][ny].t == "lg"){
-            this.empxy = this.empxy.concat([[nx,ny]]);
-        } else if(td[nx][ny].t==opp){
-            // check for neighbors neighbor for kill
-            let nn = [n[i][0]+n[i][0], n[i][1]+n[i][1]];
-            let nnx = this.i+nn[0], nny = this.j+nn[1]
-            //c("nnx,nny",nnx,nny);
-            if(nnx>4||nnx<0||nny>4||nny<0) continue;
-            if(td[nnx][nny].t=="e"){
-                this.pk = this.pk.concat([[nx,ny,nnx,nny]]);
-            }
-        }
-    }
-}
- 
-this.resethighlight = function(ex,ey) {
-    let skip = [[ex,ey]]; // exclude/except x and y
-    if(td[ex][ey].empxy.length>0){
-      skip = skip.concat(td[ex][ey].empxy); 
-    }
-    let epk = []
-    for(let j=0;j<td[ex][ey].pk.length;j++){
-      epk = epk.concat([[td[ex][ey].pk[j][2],td[ex][ey].pk[j][3]]])
-    }
-    skip = epk.length>0?skip.concat(epk):skip;
-    c(td[ex][ey].pk)
-    c("skip",skip);
-    c("pxpy.empxy",this.empxy,this.empxy.length)
-    for(let i=0;i<this.empxy.length;i++){
-      let emp = this.empxy[i]
-      if(!containsArray(skip, emp)){
-        td[emp[0]][emp[1]].updatep("e");       
-      }
-    }
-    this.yh = false;
-    this.empxy = [];
-    this.pk = [];
-}
- 
- 
-// this was inside handlec function
-  
-  //td[pi][pj].drawp();
-  
-  if (td[i][j].t == "lg"){
-      //console.log("selected");
-      td[i][j].updatep(td[pi][pj].t);
-      td[pi][pj].updatep("e");
-      
-      let ct = true; // change turn
-      
-      c("pi,pi",pi,pj,td[pi][pj].pk, td[pi][pj].pk.length,td[pi][pj].t);
-      if (td[pi][pj].pk.length>0){
-        for(let id=0;id<td[pi][pj].pk.length;id++){
-          let kx = td[pi][pj].pk[id][0], ky = td[pi][pj].pk[id][1];
-          let mx = td[pi][pj].pk[id][2], my = td[pi][pj].pk[id][3]
-          //c("kx",kx,ky);
-          if(mx == i && my == j){
-            td[kx][ky].updatep("e");
-            td[i][j].checknn();
-            ct = td[i][j].pk.length==0;
-          }
-        }
-        
-      }
-      //c("pk",td[pi][pj].pk);
-      //psp = [];
-      c("before",td[i][j].pk)
-      //td[i][j].checknn();
-      c("after",td[i][j].pk)
-      //let chng = td[i][j].pk.length==0;
-      if(ct){
-        pt = pt == "w"? "b": "w";
-      }
-  } else if(td[i][j].t != "e"){
-    //console.log("piece present");
-    td[i][j].highlightpm();
-    //c("pk",td[i][j].pk);
-    //c("emp", td[i][j].empxy)
-    
-  }
-  //console.log(e,i,j);
-  //td[i][j].drawp();
-  if(pi!=-1&&pj!=-1){
-    td[pi][pj].resethighlight(i,j);   
-  }
-  highlightMovablePieces(i,j);
-  psp = [i,j];
- 
-*/

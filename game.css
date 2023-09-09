@@ -1,10 +1,10 @@
 :root {
-  --piece-size-mobile: 30px;
-  --piece-size-desktop: 40px;
+  --piece-size-mobile: 35px;
+  --piece-size-desktop: 50px;
   --height-mobile: 65px;
-  --height-desktop: 80px;
+  --height-desktop: 90px;
   --width-mobile: 65px;
-  --width-desktop: 80px;
+  --width-desktop: 90px;
 }
 
 /* Media query for mobile devices */
@@ -38,14 +38,14 @@
 }
 
 body {
-  background-image: url("./images/background.jpg");
+  /* background-image: url("./images/background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center center;
+  background-position: center center; */
   font-family: "Berry Rotunda";
-  position: sticky;
+  /* position: sticky; */
   margin: 0px;
-  height: 97vh;
+  /* height: 97vh; */
 }
 
 .seperator img {
@@ -262,4 +262,61 @@ canvas {
   z-index: -20;
   width: 100vw;
   height: 94vh;
+}
+
+.background {
+  position: fixed;
+  display: flex;
+	width: 95%;
+  /* center page with absolute position */
+  top: 0%; left: 50%; transform: translate(-50%, 0);
+	padding: 2.5em;
+	box-shadow: 2px 3px 20px black, 0 0 525px #8f5922 inset;
+	background: #dfd8c8;
+  z-index: -100;
+  height: 100%;
+}
+
+.instructions{
+  margin: 0px 10px;
+  text-align: start;
+}
+
+ul li{
+  margin-bottom: 5px;
+}
+
+@media (min-width: 768px) {
+  .page {
+    display: flex;
+    justify-content: space-between;
+  }
+  .instructions{
+    width: 50%;
+  }
+  .game{
+    width: 50%;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .page{
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.board-top svg{
+  height: var(--piece-size);
+  width: var(--piece-size);
+  padding: 5px;
+}
+
+.board-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 0px 50px;
 }

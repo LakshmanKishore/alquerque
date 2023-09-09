@@ -10,65 +10,107 @@
 
 <body align="center">
   <div class="background"></div>
-  <h2 align="center" style="margin:13px 0px">Alquerque</h2>
-  <canvas id="celebrationCanvas"></canvas>
-  <div class="seperator">
-    <img src="./images/border.svg" alt="Border">
-  </div>
-  <div id="gameOptionsModal" class="options-screen">
-    <div class="options-screen-content">
-      <div class="options-screen-body">
-        <h2 style="margin-top:1px">Game Options</h2>
-        <div class="player-options">
-          <label class="player-option">
-            <input type="radio" name="playerMode" value="single">
-            <span class="knight-icon single-player-icon">
-              <img src="./images/white-knight.svg" alt="White Knight">
-            </span>
-            Single Player
-          </label>
-          <label class="player-option">
-            <input type="radio" name="playerMode" value="multi" checked>
-            <span class="knight-icon multi-player-icon">
-              <img src="./images/black-knight.svg" alt="Black Knight">
-              <img src="./images/white-knight.svg" alt="White Knight">
-            </span>
-            Multi Player
-          </label>
+  <div class="page">
+    <div class="game">
+      <h2 align="center" style="margin:13px 0px">Alquerque</h2>
+      <canvas id="celebrationCanvas"></canvas>
+      <div class="seperator">
+        <img src="./images/border.svg" alt="Border">
+      </div>
+      <div id="gameOptionsModal" class="options-screen">
+        <div class="options-screen-content">
+          <div class="options-screen-body">
+            <h2 style="margin-top:1px">Game Options</h2>
+            <div class="player-options">
+              <label class="player-option">
+                <input type="radio" name="playerMode" value="single">
+                <span class="knight-icon single-player-icon">
+                  <img src="./images/white-knight.svg" alt="White Knight">
+                </span>
+                Single Player
+              </label>
+              <label class="player-option">
+                <input type="radio" name="playerMode" value="multi" checked>
+                <span class="knight-icon multi-player-icon">
+                  <img src="./images/black-knight.svg" alt="Black Knight">
+                  <img src="./images/white-knight.svg" alt="White Knight">
+                </span>
+                Multi Player
+              </label>
+            </div>
+            <div class="piece-options">
+              <label class="piece-option">
+                <input type="radio" name="playerColor" value="black">
+                <span class="knight-icon black-piece-icon">
+                  <img src="./images/blackpiece.svg" alt="Black Knight">
+                </span>
+                Black Piece
+              </label>
+              <label class="piece-option">
+                <input type="radio" name="playerColor" value="white" checked>
+                <span class="knight-icon white-piece-icon">
+                  <img src="./images/whitepiece.svg" alt="White Knight">
+                </span>
+                White Piece
+              </label>
+            </div>
+            <label hidden>
+              <input type="checkbox" id="miniChallenges"> Enable Mini Challenges
+            </label>
+            <br />
+            <div class="startGameBtn">
+              <img src="./images/battle.svg" alt="Battle" class="battle">
+              <div>Start Game</div>
+            </div>
+          </div>
         </div>
-        <div class="piece-options">
-          <label class="piece-option">
-            <input type="radio" name="playerColor" value="black">
-            <span class="knight-icon black-piece-icon">
-              <img src="./images/blackpiece.svg" alt="Black Knight">
-            </span>
-            Black Piece
-          </label>
-          <label class="piece-option">
-            <input type="radio" name="playerColor" value="white" checked>
-            <span class="knight-icon white-piece-icon">
-              <img src="./images/whitepiece.svg" alt="White Knight">
-            </span>
-            White Piece
-          </label>
+      </div>
+      <div class="board-container" hidden align="center">
+        <div class="board-top">
+          <div class="sound">
+            <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <g id="volume-up">
+                <polygon fill="none" points="2.9 9 6.9 9 11.9 3 11.9 21 6.9 16 1.9 16 1.9 9 2.9 9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path class="volbars" d="M15.5,19.5a7.3,7.3,0,0,0,7-7.5,7.3,7.3,0,0,0-7-7.5 M15.5,15a3,3,0,0,0,0-6" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path class="cross" d="M15 8 L20 17Z M20 8 L15 17 Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+            </svg>
+          </div>
+          <div class="player-turn white-piece"></div>
         </div>
-        <label hidden>
-          <input type="checkbox" id="miniChallenges"> Enable Mini Challenges
-        </label>
-        <br />
-        <div class="startGameBtn">
-          <img src="./images/battle.svg" alt="Battle" class="battle">
-          <div>Start Game</div>
+        <div class="board-container">
+          <svg class="board-design">
+            <!--<rect x="36" y="36" width="216" height="216" stroke="black" fill="transparent"/>-->
+          </svg>
+          <table id="table">
+          </table>
         </div>
       </div>
     </div>
-  </div>
-  <div class="board-container" hidden align="center">
-    <svg class="board-design">
-      <!--<rect x="36" y="36" width="216" height="216" stroke="black" fill="transparent"/>-->
-    </svg>
-    <table id="table">
-    </table>
+    <div class="instructions">
+      <h4 align="center">Instructions</h4>
+      Alquerque is a two-player abstract strategy game believed to have originated in the middle east. The game is
+      considered to be the parent of Draughts and Fanorona. All pieces are laid out in a patterned board with only one
+      vacant point at the center. Each player starts with 12 pieces which are placed on opposite sides. White starts
+      first. Players alternate turn to play. The aim is to capture all of opponent's pieces to win. The rules are as
+      following
+      <ul>
+        <li>In each turn a player can move a piece one step along a marked line to an adjacent empty point (any
+          direction;
+          back, front or sideways).</li>
+        <li>
+          A piece can capture opponent piece by jumping over it and landing to empty point just beyond it (similar to
+          draughts).
+        </li>
+        <li>
+          Captures are manatory if possible and more than one capture can be done in the same turn if possible.
+        </li>
+        <li>
+          The game is won by the player who captures all of opponent pieces. A player can also lose if he/she has no
+          available moves.
+        </li>
+      </ul>
+    </div>
   </div>
   <script src="./game.js"></script>
 </body>
