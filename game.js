@@ -207,7 +207,8 @@ window.onload = function () {
         const dfx = this.i - pp.i, dfy = this.j - pp.j;//diff x & y
         if (Math.abs(dfx) == 2 || Math.abs(dfy) == 2) {
           // explosion 35
-          zzfx(2.76,.05,452,.02,.28,.43,4,.71,.2,.8,0,0,.03,1.3,0,.2,.04,.33,.03,.14);
+          // zzfx(2.76,.05,452,.02,.28,.43,4,.71,.2,.8,0,0,.03,1.3,0,.2,.04,.33,.03,.14);
+          zzfx(1.01,.05,1798,0,.12,.01,4,2.76,0,0,0,0,0,.1,0,.1,0,.58,.15,0);
           let x = pp.i + (dfx / 2), y = pp.j + (dfy / 2);
           td[x][y].updatep("e");
           if (pt == "w") {
@@ -344,8 +345,10 @@ window.onload = function () {
     let onmp = [];  // only neighbor movable pieces
     //c("gs", Object.values(gs))
     if (gs.nwp == 0 || gs.nbp == 0) {
-      gameWon.play();
-      gs.nwp==0?celebrate("Black"):celebrate("White");
+      // gameWon.play();
+      setTimeout(()=>zzfx(2.06,0,800,.03,.44,.32,2,1.35,0,0,0,0,.3,.1,0,0,0,.31,.02,.08),1)
+      setTimeout(()=>zzfx(2.06,0,800,.03,.44,.32,2,1.35,0,0,0,0,.3,.1,0,0,.26,.31,.02,.08),550)
+      gs.nwp==0?celebrate("𝔅𝔩𝔞𝔠𝔨"):celebrate("𝔚𝔥𝔦𝔱𝔢");
       instructions.remove();
       game.style.width = "100%";
       boardContainer.hidden = true;
@@ -648,7 +651,7 @@ window.onload = function () {
       // Display which player won at the center
       ctx.font = '23px Berry Rotunda';
       ctx.fillStyle = 'black';
-      ctx.fillText(`Player ${winningPlayer} Triumphs!`, centerX - 165, centerY);
+      ctx.fillText(`P𝔩𝔞𝔶𝔢𝔯 ${winningPlayer} 𝔗𝔯𝔦𝔲𝔪𝔭𝔥𝔰!`, centerX - 165, centerY);
 
       requestAnimationFrame(animateParticles);
     }

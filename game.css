@@ -32,17 +32,13 @@
   }
 }
 
-@font-face {
+/* @font-face {
   font-family: "Berry Rotunda";
   src: url('./font/Berry\ Rotunda.ttf');
-}
+} */
 
 body {
-  /* background-image: url("./images/background.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center; */
-  font-family: "Berry Rotunda";
+  font-weight: bolder;
   /* position: sticky; */
   margin: 0px;
   /* height: 97vh; */
