@@ -25,7 +25,7 @@ window.onload = function () {
   const volbars = document.querySelector(".volbars");
   const playerTurnPiece = document.querySelector(".player-turn");
   const game = document.querySelector(".game");
-  const gameWon = new Audio("./audio/gamewon.mp3");
+  const boardTop = document.querySelector(".board-top");
   cross.style.display = 'none';
   let gs = {
     yhp: [], // yellow highlight pieces
@@ -88,6 +88,8 @@ window.onload = function () {
     optionsScreen.hidden = true;
     boardContainer.hidden = false;
 
+    c("gs", gs);
+
     setGameSettings();
     generateTable(table);
     generateBoardDesign();
@@ -95,6 +97,7 @@ window.onload = function () {
 
     boardDesign.style.height = table.offsetHeight;
     boardDesign.style.width = table.offsetWidth;
+    boardTop.style.width = table.offsetWidth+"px";
   }
 
   // Event listeners
@@ -534,24 +537,25 @@ window.onload = function () {
   // Function to create a 13th century celebration effect
   function celebrate(winningPlayer) {
     // Create Image objects for each particle shape
+    const svtag = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" `;
     const swordImage = new Image();
-    swordImage.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="%23C0C0C0"><g><path d="M0 0h24v24H0z" fill="none"/><path d="M17.457 3L21 3.003l.002 3.523-5.467 5.466 2.828 2.829 1.415-1.414 1.414 1.414-2.474 2.475 2.828 2.829-1.414 1.414-2.829-2.829-2.475 2.475-1.414-1.414 1.414-1.415-2.829-2.828-2.828 2.828 1.415 1.415-1.414 1.414-2.475-2.475-2.829 2.829-1.414-1.414 2.829-2.83-2.475-2.474 1.414-1.414 1.414 1.413 2.827-2.828-5.46-5.46L3 3l3.546.003 5.453 5.454L17.457 3zm-7.58 10.406L7.05 16.234l.708.707 2.827-2.828-.707-.707zm9.124-8.405h-.717l-4.87 4.869.706.707 4.881-4.879v-.697zm-14 0v.7l11.241 11.241.707-.707L5.716 5.002l-.715-.001z" fill-rule="nonzero"/></g></svg>`;
+    swordImage.src = `${svtag}fill="%23C0C0C0" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M17 3h4v4l-5 5 2 3 2-2 1 2-2 2 3 3-2 2-3-3-2 2-2-1 2-2-3-2-3 2 2 2-2 1-2-2-3 3-2-2 3-3-2-2 1-2 2 2 2-3-5-5V3h4l5 5 5-5zm-7 10-3 3 1 1 3-3-1-1zm9-8h-1l-5 5 1 1 5-5V5zM5 5v1l11 11 1-1L6 5H5z"/></svg>`;
 
     const swordImage2 = new Image();
-    swordImage2.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="%23DC143C"><g><path d="M0 0h24v24H0z" fill="none"/><path d="M17.457 3L21 3.003l.002 3.523-5.467 5.466 2.828 2.829 1.415-1.414 1.414 1.414-2.474 2.475 2.828 2.829-1.414 1.414-2.829-2.829-2.475 2.475-1.414-1.414 1.414-1.415-2.829-2.828-2.828 2.828 1.415 1.415-1.414 1.414-2.475-2.475-2.829 2.829-1.414-1.414 2.829-2.83-2.475-2.474 1.414-1.414 1.414 1.413 2.827-2.828-5.46-5.46L3 3l3.546.003 5.453 5.454L17.457 3zm-7.58 10.406L7.05 16.234l.708.707 2.827-2.828-.707-.707zm9.124-8.405h-.717l-4.87 4.869.706.707 4.881-4.879v-.697zm-14 0v.7l11.241 11.241.707-.707L5.716 5.002l-.715-.001z" fill-rule="nonzero"/></g></svg>`;
+    swordImage2.src = `${svtag}fill="%23DC143C" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M17 3h4v4l-5 5 2 3 2-2 1 2-2 2 3 3-2 2-3-3-2 2-2-1 2-2-3-2-3 2 2 2-2 1-2-2-3 3-2-2 3-3-2-2 1-2 2 2 2-3-5-5V3h4l5 5 5-5zm-7 10-3 3 1 1 3-3-1-1zm9-8h-1l-5 5 1 1 5-5V5zM5 5v1l11 11 1-1L6 5H5z"/></svg>`;
 
     const shieldImage = new Image();
-    shieldImage.src = `data:image/svg+xml,<svg height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" fill="%23D2B48C" ><title/><path d="M479.07,111.35A16,16,0,0,0,465.92,96.6C379.89,81.18,343.69,69.12,266,34.16c-7.76-2.89-12.57-2.84-20,0-77.69,35-113.89,47-199.92,62.44a16,16,0,0,0-13.15,14.75c-3.85,61.1,4.34,118,24.36,169.15a348.86,348.86,0,0,0,71.43,112.41c44.67,47.43,94.2,75.12,119.74,85.6a20,20,0,0,0,15.11,0c27-10.92,74.69-37.82,119.71-85.62A348.86,348.86,0,0,0,454.71,280.5C474.73,229.36,482.92,172.45,479.07,111.35Z"/></svg>`;
+    shieldImage.src = `${svtag}fill="%23D2B48C" viewBox="0 0 512 512"><path d="M479 111a16 16 0 0 0-13-14c-86-16-122-28-200-63-8-3-13-3-20 0-78 35-114 47-200 63a16 16 0 0 0-13 14c-4 61 4 118 24 170a349 349 0 0 0 72 112c44 47 94 75 119 86a20 20 0 0 0 16 0c27-11 74-38 119-86a349 349 0 0 0 72-112c20-52 28-109 24-170Z"/></svg>`;
 
 
     const shieldImage2 = new Image();
-    shieldImage2.src = `data:image/svg+xml,<svg height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" fill="%238B4513" ><title/><path d="M479.07,111.35A16,16,0,0,0,465.92,96.6C379.89,81.18,343.69,69.12,266,34.16c-7.76-2.89-12.57-2.84-20,0-77.69,35-113.89,47-199.92,62.44a16,16,0,0,0-13.15,14.75c-3.85,61.1,4.34,118,24.36,169.15a348.86,348.86,0,0,0,71.43,112.41c44.67,47.43,94.2,75.12,119.74,85.6a20,20,0,0,0,15.11,0c27-10.92,74.69-37.82,119.71-85.62A348.86,348.86,0,0,0,454.71,280.5C474.73,229.36,482.92,172.45,479.07,111.35Z"/></svg>`;
+    shieldImage2.src = `${svtag}fill="%238B4513" viewBox="0 0 512 512"><path d="M479 111a16 16 0 0 0-13-14c-86-16-122-28-200-63-8-3-13-3-20 0-78 35-114 47-200 63a16 16 0 0 0-13 14c-4 61 4 118 24 170a349 349 0 0 0 72 112c44 47 94 75 119 86a20 20 0 0 0 16 0c27-11 74-38 119-86a349 349 0 0 0 72-112c20-52 28-109 24-170Z"/></svg>`;
 
     const crownImage = new Image();
-    crownImage.src = `data:image/svg+xml,<svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" fill="%23FFD700"><path d="M528 448H112c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm64-320c-26.5 0-48 21.5-48 48 0 7.1 1.6 13.7 4.4 19.8L476 239.2c-15.4 9.2-35.3 4-44.2-11.6L350.3 85C361 76.2 368 63 368 48c0-26.5-21.5-48-48-48s-48 21.5-48 48c0 15 7 28.2 17.7 37l-81.5 142.6c-8.9 15.6-28.9 20.8-44.2 11.6l-72.3-43.4c2.7-6 4.4-12.7 4.4-19.8 0-26.5-21.5-48-48-48S0 149.5 0 176s21.5 48 48 48c2.6 0 5.2-.4 7.7-.8L128 416h384l72.3-192.8c2.5.4 5.1.8 7.7.8 26.5 0 48-21.5 48-48s-21.5-48-48-48z"/></svg>`;
+    crownImage.src = `${svtag}fill="%23FFD700" viewBox="0 0 640 512"><path d="M528 448H112c-9 0-16 7-16 16v32c0 9 7 16 16 16h416c9 0 16-7 16-16v-32c0-9-7-16-16-16zm64-320a48 48 0 0 0-44 68l-72 43c-15 9-35 4-44-11L350 85a48 48 0 0 0-30-85 48 48 0 0 0-30 85l-82 143c-9 15-29 20-44 11l-72-43c2-6 4-13 4-20a48 48 0 1 0-40 47l72 193h384l72-193 8 1a48 48 0 0 0 0-96z"/></svg>`;
 
     const crownImage2 = new Image();
-    crownImage2.src = `data:image/svg+xml,<svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" fill="%23800080"><path d="M528 448H112c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm64-320c-26.5 0-48 21.5-48 48 0 7.1 1.6 13.7 4.4 19.8L476 239.2c-15.4 9.2-35.3 4-44.2-11.6L350.3 85C361 76.2 368 63 368 48c0-26.5-21.5-48-48-48s-48 21.5-48 48c0 15 7 28.2 17.7 37l-81.5 142.6c-8.9 15.6-28.9 20.8-44.2 11.6l-72.3-43.4c2.7-6 4.4-12.7 4.4-19.8 0-26.5-21.5-48-48-48S0 149.5 0 176s21.5 48 48 48c2.6 0 5.2-.4 7.7-.8L128 416h384l72.3-192.8c2.5.4 5.1.8 7.7.8 26.5 0 48-21.5 48-48s-21.5-48-48-48z"/></svg>`;
+    crownImage2.src = `${svtag}fill="%23800080" viewBox="0 0 640 512"><path d="M528 448H112c-9 0-16 7-16 16v32c0 9 7 16 16 16h416c9 0 16-7 16-16v-32c0-9-7-16-16-16zm64-320a48 48 0 0 0-44 68l-72 43c-15 9-35 4-44-11L350 85a48 48 0 0 0-30-85 48 48 0 0 0-30 85l-82 143c-9 15-29 20-44 11l-72-43c2-6 4-13 4-20a48 48 0 1 0-40 47l72 193h384l72-193 8 1a48 48 0 0 0 0-96z"/></svg>`;
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
@@ -651,7 +655,7 @@ window.onload = function () {
       // Display which player won at the center
       ctx.font = '23px Berry Rotunda';
       ctx.fillStyle = 'black';
-      ctx.fillText(`P𝔩𝔞𝔶𝔢𝔯 ${winningPlayer} 𝔗𝔯𝔦𝔲𝔪𝔭𝔥𝔰!`, centerX - 165, centerY);
+      ctx.fillText(`P𝔩𝔞𝔶𝔢𝔯 ${winningPlayer} 𝔗𝔯𝔦𝔲𝔪𝔭𝔥𝔰!`, centerX - 105, centerY);
 
       requestAnimationFrame(animateParticles);
     }
