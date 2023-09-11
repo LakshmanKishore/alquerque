@@ -172,10 +172,10 @@ table#table {
   border-radius: 50%;
   color: white;
   text-align: center;
-
-  background-image: url("./images/blackpiece.svg");
   background-color: white;
-  background-size: contain;
+
+  /* background-image: url("./images/blackpiece.svg");
+  background-size: contain; */
 }
 
 .white-piece {
@@ -185,10 +185,10 @@ table#table {
   border: 1px solid black;
   border-radius: 50%;
   text-align: center;
-
-  background-image: url("./images/whitepiece.svg");
   background-color: black;
-  background-size: contain;
+
+  /* background-image: url("./images/whitepiece.svg");
+  background-size: contain; */
 }
 
 .lg-piece {
@@ -306,7 +306,6 @@ ul li{
 .board-top svg{
   height: var(--piece-size);
   width: var(--piece-size);
-  padding: 5px;
 }
 
 .board-top {
@@ -314,5 +313,4 @@ ul li{
   justify-content: space-between;
   align-items: center;
   text-align: left;
-  padding: 0px 50px;
 }
