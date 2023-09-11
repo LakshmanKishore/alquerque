@@ -214,7 +214,8 @@ window.onload = function () {
         if (Math.abs(dfx) == 2 || Math.abs(dfy) == 2) {
           // explosion 35
           // zzfx(2.76,.05,452,.02,.28,.43,4,.71,.2,.8,0,0,.03,1.3,0,.2,.04,.33,.03,.14);
-          zzfx(1.01,.05,1798,0,.12,.01,4,2.76,0,0,0,0,0,.1,0,.1,0,.58,.15,0);
+          // zzfx(1.01,.05,1798,0,.12,.01,4,2.76,0,0,0,0,0,.1,0,.1,0,.58,.15,0);
+          zzfx(1,.05,817,.04,.1,.35,3,.7,.7,.9,0,0,0,1.4,25,.3,0,.43,.06,.33);
           let x = pp.i + (dfx / 2), y = pp.j + (dfy / 2);
           td[x][y].updatep("e");
           if (pt == "w") {
@@ -512,6 +513,12 @@ window.onload = function () {
     const centerY = canvas.height / 2;
     const particleCount = 70; // Number of particles
 
+    const replay = document.querySelector(".replay");
+    replay.hidden = false;
+    replay.style.left = (centerX-20)+"px";
+    replay.style.top = (centerY-30)+"px";
+    replay.addEventListener("click", () => {window.location.reload()});
+
     function createParticle() {
       const angle = Math.random() * Math.PI * 2; // Random angle
       const distance = Math.random() * 50 + 10; // Random distance from the center
@@ -606,7 +613,7 @@ window.onload = function () {
       // Display which player won at the center
       ctx.font = '23px Berry Rotunda';
       ctx.fillStyle = 'black';
-      ctx.fillText(`P𝔩𝔞𝔶𝔢𝔯 ${winningPlayer} 𝔗𝔯𝔦𝔲𝔪𝔭𝔥𝔰!`, centerX - 105, centerY);
+      ctx.fillText(`P𝔩𝔞𝔶𝔢𝔯 ${winningPlayer} 𝔗𝔯𝔦𝔲𝔪𝔭𝔥𝔰!`, centerX - 105, centerY+150);
 
       requestAnimationFrame(animateParticles);
     }
