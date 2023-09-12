@@ -31,6 +31,7 @@ window.onload = function () {
   cross.style.display = 'none';
   let gs = {
     yhp: [], // yellow highlight pieces
+    ghp: [], // green highlight pieces
     nbp: 12, // number of black pieces
     nwp: 12  // number of white pieces
   }; // game state
@@ -43,6 +44,8 @@ window.onload = function () {
       }
     }
   });
+
+  document.querySelector(".reset").addEventListener("click", () => {window.location.reload()});
 
   sound.addEventListener("click", (e) => {
     zzfxV=zzfxV==0?0.3:0;
@@ -92,8 +95,6 @@ window.onload = function () {
     optionsScreen.hidden = true;
     boardContainer.hidden = false;
 
-    c("gs", gs);
-
     setGameSettings();
     generateTable(table);
     generateBoardDesign();
@@ -102,6 +103,11 @@ window.onload = function () {
     boardDesign.style.height = table.offsetHeight;
     boardDesign.style.width = table.offsetWidth;
     boardTop.style.width = table.offsetWidth+"px";
+
+    if (gs.pm == "single" && gs.pc == "black"){
+      aiPlay();
+    }
+
   }
 
   // Event listeners
@@ -205,6 +211,7 @@ window.onload = function () {
 
     this.handlec = function (pp) {
       let kp = this.getkillpieces();
+      gs.ghp = kp;
       // previous piece
       if (this.t == "lg") {
         let kill = false;
@@ -235,9 +242,9 @@ window.onload = function () {
         pp.hp(pp.getn("lg"), "e");
         let ct = true; // change turn
         if (kill) {
-          kp = this.getkillpieces();
+          let nkp = this.getkillpieces();
           //c("came kp", kp)
-          this.hp(kp, "lg");
+          this.hp(nkp, "lg");
           this.addClass("green-border");
           //c("gs.yhp", gs.yhp);
           for (let a = 0; a < gs.yhp.length; a++) {
@@ -249,7 +256,7 @@ window.onload = function () {
           }
           gs.yhp = [];
           //this.yh = true;
-          ct = kp.length === 0;
+          ct = nkp.length === 0;
         }
         return ct;
       }
@@ -263,6 +270,7 @@ window.onload = function () {
         let en = this.getn("e");
         //pp.hp(pp.getn("lg"),"e");
         this.hp(en, "lg");
+        gs.ghp = en;
       }
       if (pp.t == this.t) {
         pp.removeClass("green-border");
@@ -313,7 +321,10 @@ window.onload = function () {
 
   let psp = [2, 2]; // previous selected piece
 
-  function handlec(e, i, j) {
+  function handlec(e, i, j, ec=true) {
+    //external click set to true for single player opponent
+    if(gs.pm=="single"&&gs.pc=="black"&&td[i][j].t=="w"&&ec) return;
+    if(gs.pm=="single"&&gs.pc=="white"&&td[i][j].t=="b"&&ec) return;
     if (td[i][j].t == "e") return;
     if ((!td[i][j].yh) && (td[i][j].t != "lg")) return;
     if (td[i][j].t == "w" && pt == "b") return;
@@ -346,7 +357,37 @@ window.onload = function () {
     }
     //c("ct",ct)
     psp = [i, j];
+
+    const aiColor = gs.pc == "white" ? "b" : "w";
+    if(gs.pm=="single" && pt == aiColor && ct && pct == td[i][j].t){
+      aiPlay();
+    }
+
     return;
+  }
+
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  async function aiPlay(){
+    //random item
+    let ri = gs.yhp[Math.floor(Math.random()*gs.yhp.length)];
+    
+    await delay(500);
+    handlec("e",ri[0],ri[1],false)
+    let rgi = gs.ghp[Math.floor(Math.random()*gs.ghp.length)];
+    
+    // rest green highlighted pieces so that it will be set again after the click
+    // gs.ghp = [];
+    
+    await delay(500);
+    handlec("e",rgi[0],rgi[1],false);
+    
+    while (gs.ghp.length != 0){
+      rgi = gs.ghp[Math.floor(Math.random()*gs.ghp.length)];
+      await delay(500);
+      handlec("e",rgi[0],rgi[1],false);
+    }
+
   }
 
   function highlightMovablePieces() {
@@ -473,21 +514,15 @@ window.onload = function () {
     return `<svg xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 900 900"><g fill="${fc}"><path d="M413 1a460 460 0 0 0-225 84A484 484 0 0 0 31 284l-15 46-3 11A502 502 0 0 0 1 495c2 19 8 52 12 66l3 11a414 414 0 0 0 56 125 528 528 0 0 0 107 115l10 6a387 387 0 0 0 38 24 528 528 0 0 0 87 38l13 4a439 439 0 0 0 243 1l11-4 9-2 13-5a114 114 0 0 0 15-6l10-4 17-8a102 102 0 0 0 17-9 252 252 0 0 0 20-11l14-9c51-33 96-78 129-129l9-14 2-3 5-9a540 540 0 0 0 41-100 402 402 0 0 0 17-85l1-36-1-36-3-14a409 409 0 0 0-62-183l-12-18a694 694 0 0 0-20-28 479 479 0 0 0-106-97l-14-9-3-2-8-4a366 366 0 0 0-41-21l-32-13-9-3A545 545 0 0 0 449 0l-36 1zm68 107a353 353 0 0 1 82 18l7 2a431 431 0 0 1 57 28l14 9 26 19a363 363 0 0 1 110 163 338 338 0 0 1-61 322 358 358 0 0 1-146 105 350 350 0 0 1-269-12 347 347 0 0 1-180-415l10-29a343 343 0 0 1 129-155l8-5a285 285 0 0 1 56-28c13-5 36-12 56-16 19-4 18-4 50-7 10-1 34-1 51 1z"/><path d="M432 160c-15 1-22 1-38 5a235 235 0 0 0-56 16 288 288 0 0 0-72 43l-9 8a260 260 0 0 0-42 44 285 285 0 0 0-55 212 274 274 0 0 0 20 75 285 285 0 0 0 42 71l8 9a251 251 0 0 0 63 55l9 5 33 17 14 5 6 2 4 1a274 274 0 0 0 127 13 274 274 0 0 0 105-35 313 313 0 0 0 77-63l8-9a313 313 0 0 0 50-93 274 274 0 0 0 13-127 274 274 0 0 0-35-105 290 290 0 0 0-273-149zm29 125c4 3 12 10 17 18l3 4a273 273 0 0 1 19 24l13 18c26 33 26 33 30 33l9-2 11-3 11-3 21-5 11-4c4 0 9-2 11-3 6-2 15-1 20 1s12 9 14 14 3 15 1 20l-10 32c-3 13-4 17-6 20l-3 11-2 10a561 561 0 0 0-15 52l-4 11-3 11-3 10-3 11c-2 9-10 17-18 19l-137 1c-149 0-138 1-147-8l-5-7-1-4-4-10c0-4-2-8-3-11l-3-10c0-4-2-9-3-11l-5-20-6-22c-1-3-3-7-3-11l-4-10-3-11-3-11-3-10-3-11-3-11-3-10c-2-5-1-15 1-20s9-12 14-14 14-3 20-1c2 1 7 3 11 3l11 3 11 3 11 3 10 3a1036 1036 0 0 0 20 5c4 0 4 0 30-33l13-18a1426 1426 0 0 0 19-24l3-5a89 89 0 0 1 8-9c6-7 12-10 21-10 5 0 8 0 12 2z"/><path d="M443 360a1519 1519 0 0 0-43 55 98 98 0 0 1-19 21c-5 3-6 3-13 3l-13-1-22-7-10-3c-8-2-12-2-13-1l5 21 4 11 3 10a776 776 0 0 1 8 32l3 10 4 11 1 6 1 3 110 1h109l2-6 6-21 4-13 3-10 2-9 3-10 4-13 3-10c2-10 3-12 2-13s-2-1-23 5l-10 3-11 3-13 1c-7 0-8 0-13-3-4-3-9-8-18-19a16099 16099 0 0 0-50-64l-6 7z"/></g></svg>`
   }
 
-
-
-
-  function c(a, ...b) {
-    console.log(a, b);
-  }
-
   const canvas = document.getElementById('celebrationCanvas');
   const ctx = canvas.getContext('2d');
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
+  
   // Function to create a 13th century celebration effect
   function celebrate(winningPlayer) {
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     // Create Image objects for each particle shape
     const svtag = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" `;
     const swordImage = new Image();

@@ -5,6 +5,8 @@
   --height-desktop: 90px;
   --width-mobile: 65px;
   --width-desktop: 90px;
+  --o-size-mobile : 2px;
+  --o-size-desktop: 3px;
 }
 
 /* Media query for mobile devices */
@@ -13,6 +15,7 @@
     --piece-size: var(--piece-size-mobile);
     --height: var(--height-mobile);
     --width: var(--width-mobile);
+    --o-size: var(--o-size-mobile);
   }
 }
 
@@ -22,6 +25,7 @@
     --piece-size: var(--piece-size-desktop);
     --height: var(--height-desktop);
     --width: var(--width-desktop);
+    --o-size: var(--o-size-desktop);
   }
 }
 
@@ -205,7 +209,7 @@ table#table {
 }
 
 .yellow-border {
-  outline: 2px solid yellow;
+  outline: var(--o-size) solid yellow;
 }
 
 .cell{
@@ -318,4 +322,9 @@ ul li{
 .replay{
   position: absolute;
   font-size: 1.2em;
+}
+
+.reset{
+  font-size: 1.5em;
+  cursor: pointer;
 }
