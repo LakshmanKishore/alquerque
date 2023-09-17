@@ -24,3 +24,13 @@ Immerse yourself in the medieval world of Alquerque and prove your strategic pro
 Checkout my submission [here](https://js13kgames.com/entries/alquerque)
 
 Play the game by clicking [here](https://lakshman-alquerque.surge.sh/)
+
+Resources used to build the Alquerque board game:
+- https://picsvg.com/
+- https://jakearchibald.github.io/svgomg/
+- https://www.svgrepo.com/
+- https://tools.picsart.com/text/font-generator/
+- https://killedbyapixel.github.io/ZzFX/
+- https://htmlcompressor.com/compressor/
+- https://www.toptal.com/developers/cssminifier
+- https://try.terser.org/
