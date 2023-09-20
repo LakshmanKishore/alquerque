@@ -367,8 +367,58 @@ window.onload = function () {
   }
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
+  
+  function convertGameBoard(board){
+    let state = JSON.parse(JSON.stringify(board))
+    for(let i=0; i<state.length; i++){
+      for(let j=0; j<state[0].length; j++){
+        if(state[i][j].t == "w"){
+          state[i][j] = 2
+        } else if (state[i][j].t == "b"){
+          state[i][j] = 1
+        } else {
+          state[i][j] = 0
+        }
+      }
+    }
+    return state
+  }
+  
+  function heuristicValue(state, maxPlayer){
+    let value = 0
+    for(let i=0; i<state.length; i++){
+      for(let j=0; j<state.length; j++){
+        if(state[i][j] == maxPlayer){
+          value += 1
+        }
+      }
+    }
+    return value
+  }
+    
+  function terminalNode(state, maxPlayer){
+    let maxPlayerPieces = 0
+    for(let i=0; i<state.length; i++){
+      for(let j=0; j<state.length; j++){
+        if(state[i][j] == maxPlayer){
+          maxPlayerPieces += 1
+        }
+      }
+    }
+    return maxPlayerPieces == 0
+  }
+  
+  function minimax(state, depth, maximizingPlayer){
+    if(depth == 0 || terminalNode(state, maximizingPlayer)){
+      return heuristicValue(state, maximizingPlayer)
+    }
+  }
+  
 
   async function aiPlay(){
+    let state = convertGameBoard(td)
+    console.log("State", state)
+    console.log("value", minimax(state, 0, 1))
     //random item
     let ri = gs.yhp[Math.floor(Math.random()*gs.yhp.length)];
     
