@@ -1,4 +1,7 @@
 # Alquerque
+This is game built for js13kgames competition. 
+This game made into 72nd position with around 160 submissions in desktop category.
+In mobile category it made into 28th position with around 58 submissions.
 
 # Game Description:
 Experience the strategic depth of the 13th-century Alquerque board game in this digital adaptation. Test your tactical prowess in a medieval setting where knights, castles, and strategic maneuvers rule the day. Challenge friends in this classic game of capture and conquest.
