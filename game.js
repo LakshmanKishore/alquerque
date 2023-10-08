@@ -36,6 +36,8 @@ window.onload = function () {
     nwp: 12  // number of white pieces
   }; // game state
 
+  let exploredStates = {};
+
   document.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -68,8 +70,8 @@ window.onload = function () {
     const playerModeOptions = document.querySelectorAll('input[name="playerMode"]');
     const playerColorOptions = document.querySelectorAll('input[name="playerColor"]');
 
-    let selectedPlayerMode = '';
-    let selectedPlayerColor = '';
+    let selectedPlayerMode = 'single';
+    let selectedPlayerColor = 'white';
     let enableChallenges = false;
 
     // Find the selected player mode
@@ -110,6 +112,7 @@ window.onload = function () {
 
   }
 
+
   // Event listeners
   startGameBtn.addEventListener('click', startGame);
 
@@ -147,18 +150,18 @@ window.onload = function () {
     this.nei = []; //neighbours
     this.drawp = function () {
       let txt = `${this.i},${this.j}`
-      txt = '';
+      // txt = '';
       if (this.t == "b") {
         //console.log("black");
-        this.pc.innerHTML = `<div class="black-piece">${getPieceSVG("#000")}</div>`
+        this.pc.innerHTML = `<div class="black-piec">${txt}</div>`
       } else if (this.t == "w") {
         //console.log("white")
-        this.pc.innerHTML = `<div class="white-piece">${getPieceSVG("#fff")}</div>`
+        this.pc.innerHTML = `<div class="white-piec">${txt}</div>`
       } else if (this.t == "lg") {
         this.pc.innerHTML = `<div class="lg-piece">${txt}</div>`
       } else {
         //c("empty");
-        this.pc.innerHTML = "";
+        this.pc.innerHTML = `${txt}`;
       }
     }
 
@@ -367,6 +370,10 @@ window.onload = function () {
   }
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  function gameBoardToString(board){
+    return board.map(v => v.map(x => `${x}`).join('')).join('')
+  }
   
   function convertGameBoard(board){
     let state = JSON.parse(JSON.stringify(board))
@@ -413,7 +420,149 @@ window.onload = function () {
       return heuristicValue(state, maximizingPlayer)
     }
   }
+
+  function getNeighbors(row, col) {
+    const neighbors = [];
   
+    if (row > 0) {
+      neighbors.push([row - 1, col]);
+    }
+    if (row < 4) {
+      neighbors.push([row + 1, col]);
+    }
+    if (col > 0) {
+      neighbors.push([row, col - 1]);
+    }
+    if (col < 4) {
+      neighbors.push([row, col + 1]);
+    }
+  
+    // Check if the row,col has diagonal move
+    if ((row+col) % 2 == 0){
+      if (row > 0 && col > 0) {
+        neighbors.push([row - 1, col - 1]);
+      }
+      if (row < 4 && col > 0) {
+        neighbors.push([row + 1, col - 1]);
+      }
+      if (row > 0 && col < 4) {
+        neighbors.push([row - 1, col + 1]);
+      }
+      if (row < 4 && col < 4) {
+        neighbors.push([row + 1, col + 1]);
+      }
+    }
+  
+    return neighbors;
+  }
+  
+  
+
+  function getPossibleActions(state, player) {
+    const neighborMovablePieces = [];
+    const killMovablePieces = [];
+
+    const killPiece = player == 1 ? 2 : 1;
+    
+    for (let row = 0; row < 5; row++) {
+      for (let col = 0; col < 5; col++) {
+        const piece = state[row][col];
+        if (piece === player) {
+          // Check for possible moves
+          for (const neighbor of getNeighbors(row, col)) {
+            if (state[neighbor[0]][neighbor[1]] === 0) {
+              neighborMovablePieces.push([row, col, neighbor[0], neighbor[1]]);
+            }
+          }
+  
+          // Check for possible kills
+          for (const neighbor of getNeighbors(row, col)) {
+            if (state[neighbor[0]][neighbor[1]] === killPiece) {
+              for (const nextNeighbor of getNeighbors(neighbor[0], neighbor[1])) {
+                if (state[nextNeighbor[0]][nextNeighbor[1]] === 0) {
+                  killMovablePieces.push([row, col, neighbor[0], neighbor[1], nextNeighbor[0], nextNeighbor[1]]);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  
+    return { neighborMovablePieces, killMovablePieces };
+  }
+  
+
+  function performActionOnState(state, action){ 
+    if(action.length == 6){
+      // perform kill operation
+      let [row, col, killx, killy, jumpx, jumpy] = action;
+      let oldPiece = state[row][col];
+      state[killx][killy] = 0;
+      state[jumpx][jumpy] = oldPiece;
+      state[row][col] = 0;
+    } else if (action.length == 4) {
+      let [row, col, jumpx, jumpy] = action;
+      let oldPiece = state[row][col];
+      state[jumpx][jumpy] = oldPiece;
+      state[row][col] = 0;
+    }
+    return state
+  }
+
+  function getStateValue(state, action, minPlayer=true){
+    let stateString = gameBoardToString(state);
+    let value;
+    const countOnes = (stateString.match(/1/g) || []).length;
+    const countTwos = (stateString.match(/2/g) || []).length;
+    if(countTwos <= 2){
+      exploredStates[stateString] = 1;
+      // check only 1's in the board i.e, 2's count is 0
+      return 1;
+    } else if (countOnes <= 2){
+      exploredStates[stateString] = -1;
+      // check only 2's in the board i.e, 1's count is 0
+      return -1;
+    } else {
+      let newState = performActionOnState(state, action);
+      let newStateString = gameBoardToString(newState);
+      console.log("newStateString", newStateString);
+      if(exploredStates[newStateString] != undefined){
+        return exploredStates[newStateString]
+      }
+
+      if(minPlayer){
+        value = 999999999;
+        let userActions = getPossibleActions(newState, newState[action[0]][action[1]]);
+        if (userActions.killMovablePieces.length >= 1){
+          userActions.killMovablePieces.forEach(act => {
+            value = Math.min(value, getStateValue(newState, act, false))
+          });
+        } else {
+          userActions.neighborMovablePieces.forEach(act => {
+            value = Math.min(value, getStateValue(newState, act, false))
+          });
+        }
+      } else {
+        value = -999999999;
+        let compActions = getPossibleActions(newState, newState[action[0]][action[1]]);
+        if(compActions.killMovablePieces.length >= 1){
+          compActions.killMovablePieces.forEach(act => {
+            value = Math.max(value, getStateValue(newState, act, true));
+          })
+        } else {
+          compActions.neighborMovablePieces.forEach(act => {
+            value = Math.max(value, getStateValue(newState, act, true));
+          })
+        }
+      }
+
+      exploredStates[newStateString] = value;
+      return value;
+    }
+  }
+
+  let firstRun = true;
 
   async function aiPlay(){
     let state = convertGameBoard(td)
@@ -421,7 +570,16 @@ window.onload = function () {
     console.log("value", minimax(state, 0, 1))
     //random item
     let ri = gs.yhp[Math.floor(Math.random()*gs.yhp.length)];
+
+    if(firstRun){
+      let stateValue = getStateValue(state, [1,3,3,3], true);
+      console.log("state value", stateValue)
+      firstRun = false;
+    }
     
+    // optimal move
+    // let ri =  
+
     await delay(500);
     handlec("e",ri[0],ri[1],false)
     let rgi = gs.ghp[Math.floor(Math.random()*gs.ghp.length)];
@@ -707,6 +865,7 @@ window.onload = function () {
   }
 //  celebrate("Black")
 
+startGame()
 }
 
 
